@@ -1,0 +1,135 @@
+<div class="topnav">
+    <a class="active" href="#home">Home</a>
+    <a href="#news">News</a>
+    <a href="#contact">Contact</a>
+    <a href="#about">About</a>
+    <a href="/login">Logout</a>
+  </div>
+  
+  <div class="container">
+    <div class="header">
+      <h2>Employee Data</h2>
+      <button  (click)="openAddPopup()" class="add-button">Add Employee</button>
+    </div>
+  
+    <!-- Table Data -->
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Employee ID</th>
+            <th>Employee Name</th>
+            <th>Contact</th>
+            <th>DOB</th>
+            <th>Location</th>
+            <th>Department</th>
+            <th>Gender</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of employees; let i = index" [ngClass]="{'highlight-row': i % 2 === 0}">
+            <td>{{ item.employeeId }}</td>
+            <td>{{ item.employeeName }}</td>
+            <td>{{ item.employeePhone }}</td>
+            <td>{{ item.dob }}</td>
+            <td>{{ item.location }}</td>
+            <td>{{ item.department }}</td>
+            <td>{{ item.gender }}</td>
+  
+            <td>
+              <button (click)="openEditPopup(item)" class="edit-button">✏️</button>
+              <button (click)="openDeletePopup(item)"class="delete-button">🗑️</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+     <!-- Add Employee Popup -->
+     <div *ngIf="isAddPopupOpen" class="modal">
+      <div class="modal-content">
+        <span class="close" (click)="closeAddPopup()">&times;</span>
+        <h2>Add Employee</h2>
+        <form (ngSubmit)="addEmployee(employeeForm)" #employeeForm="ngForm">
+          <label for="id">Employee ID:</label>
+          <input type="number" id="id" [(ngModel)]="newEmployee.employeeId" name="id" required /><br>
+    
+          <label for="name">Name:</label>
+          <input type="text" id="name" [(ngModel)]="newEmployee.employeeName" name="name" required /><br>
+    
+          <label for="phone">Phone:</label>
+          <input type="text" id="phone" [(ngModel)]="newEmployee.employeePhone" name="phone" required /><br>
+    
+          <label for="dob">Date of Birth:</label>
+          <input type="date" id="dob" [(ngModel)]="newEmployee.dob" name="dob" required /><br>
+    
+          <label for="location">Location:</label>
+          <select id="location" [(ngModel)]="newEmployee.location" name="location" required>
+            <option *ngFor="let loc of locations" [value]="loc">{{ loc }}</option>
+          </select><br>
+
+          <label for="department">Department:</label>
+          <select id="department" [(ngModel)]="newEmployee.department" name="department" required>
+            <option *ngFor="let dep of departments" [value]="dep">{{ dep }}</option>
+          </select><br>
+  
+          <label for="gender">Gender:</label>
+          <select id="gender" [(ngModel)]="newEmployee.gender" name="gender" required>
+            <option *ngFor="let item of gender" [value]="item">{{ item }}</option>
+          </select><br>
+    
+          <button type="submit">Add Employee</button>
+        </form>
+      </div>
+    </div>
+    
+  
+  
+      <!-- Edit Employee Popup -->
+    <div *ngIf="isEditPopupOpen" class="modal">
+      <div class="modal-content">
+        <span class="close" (click)="closeEditPopup()">&times;</span>
+        <h2>Edit Employee</h2>
+        <form (ngSubmit)="saveEmployee(employeeForm)" #employeeForm="ngForm">
+          <label for="name">Name:</label>
+          <input type="text" id="name" [(ngModel)]="selectedEmployee.employeeName" name="name" required /><br>
+    
+          <label for="phone">Phone:</label>
+          <input type="text" id="phone" [(ngModel)]="selectedEmployee.employeePhone" name="phone" required /><br>
+    
+          <label for="dob">Date of Birth:</label>
+          <input type="date" id="dob" [(ngModel)]="selectedEmployee.dob" name="dob" required /><br>
+    
+          <label for="location">Location:</label>
+          <select id="location" [(ngModel)]="selectedEmployee.location" name="location" required>
+            <option *ngFor="let loc of locations" [value]="loc">{{ loc }}</option>
+          </select><br>
+
+          <label for="department">Department:</label>
+          <select id="department" [(ngModel)]="selectedEmployee.department" name="department" required>
+            <option *ngFor="let dep of departments" [value]="dep">{{ dep }}</option>
+          </select><br>
+  
+          <label for="gender">Gender:</label>
+          <select id="gender" [(ngModel)]="selectedEmployee.gender" name="gender" required>
+            <option *ngFor="let item of gender" [value]="item">{{ item }}</option>
+          </select><br>
+    
+          <button type="submit">Save</button>
+        </form>
+      </div>
+  </div>
+  
+  
+  <!-- Delete Employee Popup -->
+  <div *ngIf="isDeletePopupOpen" class="modal">
+    <div class="modal-content">
+      <span class="close" (click)="closeDeletePopup()">&times;</span>
+      <h2>Confirm Delete</h2>
+      <p>Are you sure you want to delete <strong>{{ selectedEmployee.employeeName }}</strong>?</p>
+      <button (click)="deleteEmployee()">Yes</button>
+      <button (click)="closeDeletePopup()">Cancel</button>
+    </div>
+  </div>
+  
